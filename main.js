@@ -12,11 +12,11 @@ let computerScore = 0;
 playButtons.forEach((button) => {
     button.addEventListener('click', () => {      
         computerChoice = getComputerChoice();
-        if (button.id == "Rock") {
+        if (button.id == "rock-button") {
             playerChoice = 0;
-        } else if (button.id == "Paper") {
+        } else if (button.id == "paper-button") {
             playerChoice = 1;
-        } else if (button.id == "Scissors") {
+        } else if (button.id == "scissors-button") {
             playerChoice = 2;
         }
         
@@ -26,8 +26,8 @@ playButtons.forEach((button) => {
 
 // Function to randomly return rock - 0, paper - 1, or scissors - 2.
 function getComputerChoice() {
-    let computer_choice = Math.floor(Math.random() * 3);
-    return computer_choice;
+    let computerChoice = Math.floor(Math.random() * 3);
+    return computerChoice;
 }
 
 // Function to commence a round.
@@ -36,15 +36,17 @@ function playRound() {
                         [2, 0, 1],
                         [1, 2, 0]];
     let result = resultMatrix[playerChoice][computerChoice];
+    let convertedPlayerChoice = convertChoice(playerChoice);
+    let convertedComputerChoice = convertChoice(computerChoice);
 
     if (result == 0) {
         resultOutput.textContent = 'It\'s a draw.';
     } else if (result == 1) {
-        resultOutput.textContent = 'You win!';
-        playerScore++;
-    } else if (result == 2) {
-        resultOutput.textContent = 'You lose!';
+        resultOutput.textContent = `You lose! ${convertedPlayerChoice} loses to ${convertedComputerChoice}!`;
         computerScore++;
+    } else if (result == 2) {
+        resultOutput.textContent = `You win! ${convertedPlayerChoice} beats ${convertedComputerChoice}!`;
+        playerScore++;
     }
 }
 
@@ -70,4 +72,18 @@ function playGame() {
 function printScore() {
     player.textContent = `Player: ${playerScore}`;
     computer.textContent = `Computer: ${computerScore}`;
+}
+
+// Function choices from number to rock/paper/scissors
+function convertChoice(choice) {
+    let convertedChoice = '';
+    if (choice == 0) {
+        convertedChoice = 'Rock';
+    } else if (choice == 1) {
+        convertedChoice = 'Paper';
+    } else if (choice == 2) {
+        convertedChoice = 'Scissors';
+    }
+
+    return convertedChoice;
 }
