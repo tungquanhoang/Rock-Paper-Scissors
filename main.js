@@ -1,75 +1,73 @@
-let winMessage = "You Win!";
-let loseMessage = "You Lose!";
-let drawMessage = "Draw!";
+const resultOutput = document.querySelector('.result-output');
+const player = document.querySelector('#player-score');
+const computer = document.querySelector('#computer-score');
+const playButtons = document.querySelectorAll('button');
 
-// Function to randomly return rock, paper, or scissors.
+let playerChoice = 0;
+let computerChoice = 0;
+
+let playerScore = 0;
+let computerScore = 0;
+
+playButtons.forEach((button) => {
+    button.addEventListener('click', () => {      
+        computerChoice = getComputerChoice();
+        if (button.id == "Rock") {
+            playerChoice = 0;
+        } else if (button.id == "Paper") {
+            playerChoice = 1;
+        } else if (button.id == "Scissors") {
+            playerChoice = 2;
+        }
+        
+        playGame();
+    })
+})
+
+// Function to randomly return rock - 0, paper - 1, or scissors - 2.
 function getComputerChoice() {
-    let random_choice = Math.floor(Math.random() * 3);
-    let computer_choice;
-    if (random_choice == 0) {
-        computer_choice = "rock";
-    } else if (random_choice == 1) {
-        computer_choice = "paper";
-    } else {
-        computer_choice = "scissors";
-    }
-    console.log(`Computer: ${computer_choice}`);
+    let computer_choice = Math.floor(Math.random() * 3);
     return computer_choice;
 }
 
 // Function to commence a round.
-function playRound(playerSelection, computerSelection) {
-    playerSelection = playerSelection.toLowerCase();
-    computerSelection = computerSelection.toLowerCase();
+function playRound() {
+    const resultMatrix = [[0, 1, 2],
+                        [2, 0, 1],
+                        [1, 2, 0]];
+    let result = resultMatrix[playerChoice][computerChoice];
 
-    if (computerSelection == playerSelection) {
-        return drawMessage;
-    } else if (computerSelection == "rock") {
-        if (playerSelection == "paper") {
-            return winMessage;
-        } else if (playerSelection == "scissors") {
-            return loseMessage;
-        }
-    } else if (computerSelection == "paper") {
-        if (playerSelection == "rock") {
-            return loseMessage;
-        } else if (playerSelection == "scissors") {
-            return winMessage;
-        }
-    } else if (computerSelection == "scissors") {
-        if (playerSelection == "rock") {
-            return winMessage;
-        } else if (playerSelection == "paper") {
-            return loseMessage;
-        }
+    if (result == 0) {
+        resultOutput.textContent = 'It\'s a draw.';
+    } else if (result == 1) {
+        resultOutput.textContent = 'You win!';
+        playerScore++;
+    } else if (result == 2) {
+        resultOutput.textContent = 'You lose!';
+        computerScore++;
     }
 }
 
-// Function to start a 5-round game.
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-    let playerSelection;
-    let computerSelection;
+// Function to play the game until one player reaches 5 points.
+function playGame() {
+    playRound();
+    printScore();
     
-    for (let i = 0; i < 5; i++) {
-        playerSelection = prompt();
-        console.log(`Player: ${playerSelection}`);
-        computerSelection = getComputerChoice();
-        let result = playRound(playerSelection, computerSelection);
-        if (result == winMessage) {
-            playerScore++;
-        } else if (result == loseMessage) {
-            computerScore++;
-        }
-        console.log(result);
-    }
-
-    if (playerScore > computerScore) {
-        console.log("You win the game!");
-    } else if (playerScore < computerScore) {
-        console.log("You lose the game!");
+    if (playerScore == 5) {
+        resultOutput.textContent = 'You won the game!';
+        playerScore = 0;
+        computerScore = 0;
+        printScore();
+    } else if (computerScore == 5) {
+        resultOutput.textContent = 'You lost the game!';
+        playerScore = 0;
+        computerScore = 0;
+        printScore();
     }
 }
 
-game();
+// Function to print out the current scores.
+function printScore() {
+    player.textContent = `Player: ${playerScore}`;
+    computer.textContent = `Computer: ${computerScore}`;
+}

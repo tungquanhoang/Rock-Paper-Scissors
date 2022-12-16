@@ -3,10 +3,20 @@
     <head>
         <meta charset="UTF-8">
         <title>Rock Paper Scissors</title>
+        <script src="main.js" defer></script>
     </head>
 
     <body>
-        <script src="main.js"></script>
-        
+        <div class="play-buttons">
+            <button class="play-button" id="rock-button">Rock</button>
+            <button class="play-button" id="paper-button">Paper</button>
+            <button class="play-button" id="scissors-button">Scissors</button>
+        </div>
+        <div class="result">
+            <h2>Result</h1>
+            <div class="score" id="player-score">Player: 0</div>
+            <div class="score" id="computer-score">Computer: 0</div>
+            <div class="result-output"></div>
+        </div>
     </body>
 </html>
